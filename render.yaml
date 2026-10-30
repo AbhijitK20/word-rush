@@ -10,7 +10,6 @@ services:
     autoDeployTrigger: commit
     domains:
       - wordrush.abhi2.me
-      - play.abhi2.me
     envVars:
       - key: NODE_ENV
         value: production
