@@ -9,8 +9,8 @@ services:
     healthCheckPath: /healthz
     autoDeployTrigger: commit
     domains:
-      - play.abhi2.me
       - wordrush.abhi2.me
+      - play.abhi2.me
     envVars:
       - key: NODE_ENV
         value: production
