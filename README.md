@@ -2,6 +2,8 @@
 
 A real-time multiplayer word hunt for friends, family, and classmates. Everyone opens the same 4×4 board, races the same countdown, and tries to outscore the room. No accounts, downloads, or app installs.
 
+**Play:** https://play.abhi2.me
+
 Create a room, share the code or link, and play from any phone or laptop.
 
 ![Word Rush game screen](docs/word-rush.png)
