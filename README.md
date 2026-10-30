@@ -4,6 +4,8 @@ A real-time multiplayer word hunt for friends, family, and classmates. Everyone 
 
 Create a room, share the code or link, and play from any phone or laptop.
 
+![Word Rush game screen](docs/word-rush.png)
+
 ## Run it locally
 
 Requires Node.js 20 or newer.
