@@ -3,10 +3,13 @@ services:
     name: word-rush
     runtime: node
     plan: free
+    region: singapore
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /healthz
-    autoDeploy: true
+    autoDeployTrigger: commit
+    domains:
+      - play.abhi2.me
     envVars:
       - key: NODE_ENV
         value: production
