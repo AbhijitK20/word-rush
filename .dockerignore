@@ -1,0 +1,11 @@
+node_modules
+test
+test-artifacts
+scripts
+.git
+.gitignore
+.env
+*.log
+README.md
+DEPLOY.md
+NOTICE.md

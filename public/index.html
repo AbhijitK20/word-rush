@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f1e6" />
+  <meta name="description" content="Word Rush is a free real-time multiplayer word hunt. Create a room, share the code, and race friends to find words on the same board." />
+  <meta name="color-scheme" content="light" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Word Rush — a real-time multiplayer word hunt" />
+  <meta property="og:description" content="Create a room, share the code, and race friends to find words on the same board. No signup, no downloads." />
+  <meta name="twitter:card" content="summary" />
+  <title>Word Rush — multiplayer word hunt</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <noscript>
+    <div class="noscript">Word Rush needs JavaScript to keep everyone’s board in sync. Please enable JavaScript and reload.</div>
+  </noscript>
+  <div class="scene" aria-hidden="true">
+    <div class="scene-glow scene-glow-a"></div>
+    <div class="scene-glow scene-glow-b"></div>
+    <div class="scene-grain"></div>
+  </div>
+
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="/" id="brand-link" aria-label="Word Rush home">
+        <span class="brand-mark" aria-hidden="true">W</span>
+        <span class="brand-text">Word<span>Rush</span></span>
+      </a>
+      <div class="topbar-right">
+        <span id="connection-pill" class="connection-pill" data-state="connecting">
+          <span class="connection-dot" aria-hidden="true"></span>
+          <span id="connection-label">Connecting</span>
+        </span>
+        <button id="sound-btn" class="icon-btn" type="button" aria-label="Mute sounds" title="Mute sounds">
+          <span id="sound-icon" aria-hidden="true">🔊</span>
+        </button>
+        <button id="top-leave-btn" class="btn btn-ghost btn-small" type="button" hidden>Leave room</button>
+      </div>
+    </header>
+
+    <div id="connection-banner" class="connection-banner" role="status" hidden>
+      Connection lost — trying to get you back in…
+    </div>
+
+    <main class="main">
+      <section id="screen-landing" class="screen landing-screen">
+        <div class="landing-grid">
+          <div class="hero">
+            <div class="hero-kicker"><span class="pulse-dot" aria-hidden="true"></span> Real-time multiplayer word hunt</div>
+            <h1 class="hero-title"><span class="title-line">WORD</span><span class="title-line title-accent">RUSH</span></h1>
+            <p class="hero-copy">Spot words. Tap the tiles. Beat the room. A fast, friendly word game for 2–10 players on any device — no signup, no downloads.</p>
+
+            <ul class="hero-steps" aria-label="How it works">
+              <li><span class="step-num">01</span><span><strong>Create a room</strong><small>Pick a name and an animal</small></span></li>
+              <li><span class="step-num">02</span><span><strong>Share the code</strong><small>Friends join from their phones</small></span></li>
+              <li><span class="step-num">03</span><span><strong>Find the most words</strong><small>Same board, same clock, live scores</small></span></li>
+            </ul>
+
+            <div class="hero-tiles" aria-hidden="true">
+              <span class="hero-tile tile-a">W</span>
+              <span class="hero-tile tile-b">O</span>
+              <span class="hero-tile tile-c">R</span>
+              <span class="hero-tile tile-d">D</span>
+            </div>
+          </div>
+
+          <section class="play-card card" aria-labelledby="play-heading">
+            <div class="card-heading">
+              <div class="eyebrow" id="play-eyebrow">Ready when you are</div>
+              <h2 id="play-heading">Jump in</h2>
+              <p id="play-subcopy">Pick a name and an animal. That is your whole profile.</p>
+            </div>
+
+            <label class="field-label" for="name-input">Your name</label>
+            <input id="name-input" class="text-input" type="text" maxlength="14" autocomplete="nickname" placeholder="e.g. Sam" />
+
+            <div class="field-label">Your avatar</div>
+            <div id="avatar-picker" class="avatar-picker" role="radiogroup" aria-label="Choose an avatar"></div>
+
+            <button id="create-btn" class="btn btn-primary btn-large" type="button">
+              Create a room <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <div class="or-divider"><span>or join a room</span></div>
+
+            <div class="invite-code-label field-label">Room code</div>
+            <div class="join-row">
+              <input id="code-input" class="text-input code-input" type="text" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="CODE" aria-label="Room code" />
+              <button id="join-btn" class="btn btn-secondary" type="button">Join</button>
+            </div>
+
+            <button id="new-room-link" class="link-btn" type="button">Create your own room instead</button>
+            <p id="landing-error" class="form-error" role="alert"></p>
+            <p class="microcopy">Free · No account · Phones welcome</p>
+          </section>
+        </div>
+      </section>
+
+      <section id="screen-lobby" class="screen lobby-screen" hidden>
+        <div class="lobby-grid">
+          <section class="invite-card card">
+            <div class="eyebrow">Your room code</div>
+            <div id="room-code" class="room-code" aria-label="Room code">----</div>
+            <div class="invite-actions">
+              <button id="copy-link-btn" class="btn btn-primary" type="button">Copy invite link</button>
+              <button id="copy-code-btn" class="btn btn-ghost" type="button">Copy code</button>
+            </div>
+            <div class="qr-frame">
+              <img id="qr-img" alt="QR code to join this room" width="180" height="180" />
+            </div>
+            <p class="microcopy">Scan with a phone camera or send the link. Friends can join mid-game too.</p>
+          </section>
+
+          <section class="players-card card">
+            <div class="section-head">
+              <div>
+                <div class="eyebrow">The room</div>
+                <h2>Players <span id="lobby-count" class="count-pill">1/10</span></h2>
+              </div>
+              <span id="host-badge" class="host-hint">You are the host</span>
+            </div>
+
+            <ul id="lobby-players" class="player-list"></ul>
+
+            <div id="host-settings" class="settings">
+              <div class="setting-row">
+                <span>Rounds</span>
+                <div id="rounds-picker" class="segmented" role="group" aria-label="Number of rounds"></div>
+              </div>
+              <div class="setting-row">
+                <span>Round length</span>
+                <div id="time-picker" class="segmented" role="group" aria-label="Round length"></div>
+              </div>
+            </div>
+            <div id="guest-settings" class="settings-readonly"></div>
+
+            <button id="start-btn" class="btn btn-primary btn-large" type="button">Start game</button>
+            <p id="waiting-host" class="waiting" hidden>Waiting for the host to start…</p>
+            <p id="lobby-hint" class="microcopy">Invite a friend — or start solo to practice.</p>
+          </section>
+
+          <aside class="rules-card card">
+            <div class="eyebrow">How to play</div>
+            <h2>Three-second rules</h2>
+            <ol class="rules-list">
+              <li><span class="rule-num">1</span><div><strong>Connect neighboring tiles.</strong> Tap letters in any direction, including diagonals.</div></li>
+              <li><span class="rule-num">2</span><div><strong>Make real words, 3+ letters.</strong> Each tile can be used once per word.</div></li>
+              <li><span class="rule-num">3</span><div><strong>Score by length.</strong> Longer words are worth more. Most points after the final round wins.</div></li>
+            </ol>
+            <div class="score-key" aria-label="Scoring">
+              <span>3 <b>1</b></span><span>4 <b>2</b></span><span>5 <b>3</b></span><span>6 <b>5</b></span><span>7 <b>8</b></span><span>8+ <b>12</b></span>
+            </div>
+            <p class="microcopy">Everyone sees the same board. Your words stay hidden from other players until the round ends.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="screen-game" class="screen game-screen" hidden>
+        <div class="game-topbar">
+          <div class="round-info">
+            <span class="eyebrow">Round</span>
+            <strong><span id="round-current">1</span><span class="muted">/</span><span id="round-total">3</span></strong>
+          </div>
+          <div id="timer" class="timer" aria-label="Time remaining">
+            <svg class="timer-ring" viewBox="0 0 44 44" aria-hidden="true">
+              <circle class="timer-track" cx="22" cy="22" r="18"></circle>
+              <circle id="timer-progress" class="timer-progress" cx="22" cy="22" r="18"></circle>
+            </svg>
+            <span id="timer-seconds">90</span>
+          </div>
+          <div class="game-actions">
+            <button id="invite-btn" class="btn btn-ghost btn-small" type="button">Invite</button>
+            <button id="leave-btn" class="btn btn-ghost btn-small" type="button">Leave</button>
+          </div>
+        </div>
+
+        <div id="score-strip" class="score-strip" aria-label="Live scores"></div>
+
+        <div class="game-layout">
+          <section class="board-card card">
+            <div class="board-topline">
+              <span class="board-label">Tap adjoining letters</span>
+              <span id="round-found" class="round-found">0 words found</span>
+            </div>
+
+            <div id="grid" class="grid" role="group" aria-label="Letter grid"></div>
+
+            <div class="word-builder">
+              <div id="word-display" class="word-display" aria-live="polite">
+                <span class="word-placeholder">Build a word…</span>
+              </div>
+              <div class="word-actions">
+                <button id="clear-btn" class="btn btn-ghost" type="button">Clear</button>
+                <button id="submit-btn" class="btn btn-primary" type="button" disabled>Submit</button>
+              </div>
+            </div>
+            <div class="builder-meta">
+              <span id="word-points" class="points-preview"></span>
+              <span class="keyboard-hint">Type · Backspace · Enter</span>
+            </div>
+
+            <div id="live-ticker" class="live-ticker" aria-live="polite"></div>
+
+            <div class="your-words">
+              <div class="section-head small">
+                <h3>Your words <span id="your-word-count" class="count-pill">0</span></h3>
+              </div>
+              <ul id="your-words" class="word-list"></ul>
+            </div>
+          </section>
+
+          <aside class="game-side">
+            <section class="card scoreboard-card">
+              <div class="section-head small"><h2>Scoreboard</h2></div>
+              <ol id="scoreboard" class="scoreboard"></ol>
+            </section>
+            <section class="card feed-card">
+              <div class="section-head small"><h2>Live feed</h2></div>
+              <ul id="feed" class="feed"></ul>
+              <div id="reaction-bar" class="reaction-bar" aria-label="Send a reaction"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Word Rush</span>
+      <span class="footer-dot" aria-hidden="true">·</span>
+      <span>Built for playing together</span>
+    </footer>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <div id="results-overlay" class="overlay" hidden>
+    <div class="overlay-backdrop"></div>
+    <div class="overlay-card card" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+      <button id="overlay-close" class="overlay-close icon-btn" type="button" aria-label="Close results">×</button>
+      <div class="eyebrow" id="overlay-eyebrow">Round complete</div>
+      <h2 id="overlay-title">Word hunters</h2>
+      <p id="overlay-subtitle" class="overlay-subtitle"></p>
+      <div id="podium" class="podium" hidden></div>
+      <div id="results-caption" class="results-caption"></div>
+      <div id="results-list" class="results-list"></div>
+      <div class="overlay-actions">
+        <button id="next-round-btn" class="btn btn-primary" type="button" hidden>Next round <span class="btn-arrow" aria-hidden="true">→</span></button>
+        <button id="rematch-btn" class="btn btn-primary" type="button" hidden>Play again <span class="btn-arrow" aria-hidden="true">→</span></button>
+        <button id="overlay-leave-btn" class="btn btn-ghost" type="button" hidden>Leave room</button>
+        <p id="next-countdown" class="next-countdown"></p>
+        <p id="waiting-next" class="waiting" hidden>Waiting for the host…</p>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
